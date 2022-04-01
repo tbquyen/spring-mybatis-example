@@ -16,8 +16,8 @@ public class ChangePasswordValidator implements Validator {
 	}
 
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmpty(errors, "username", "app.001", new Object[] { "userName" });
-		ValidationUtils.rejectIfEmpty(errors, "password", "app.001", new Object[] { "password" });
-		ValidationUtils.rejectIfEmpty(errors, "newpassword", "app.001", new Object[] { "newpassword" });
+		ValidationUtils.rejectIfEmpty(errors, ChangePasswordConst.F_USERNAME, "app.001", new Object[] { "userName" });
+		ValidationUtils.rejectIfEmpty(errors, ChangePasswordConst.F_PASSWORD, "app.001", new Object[] { "password" });
+		ValidationUtils.rejectIfEmpty(errors, ChangePasswordConst.F_NEWPASSWORD, "app.001", new Object[] { "newpassword" });
 	}
 }

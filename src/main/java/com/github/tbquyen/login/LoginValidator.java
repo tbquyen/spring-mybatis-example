@@ -16,7 +16,7 @@ public class LoginValidator implements Validator {
 	}
 
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmpty(errors, "username", "app.001", new Object[] { "userName" });
-		ValidationUtils.rejectIfEmpty(errors, "password", "app.001", new Object[] { "password" });
+		ValidationUtils.rejectIfEmpty(errors, LoginConst.F_USERNAME, "app.001", new Object[] { "userName" });
+		ValidationUtils.rejectIfEmpty(errors, LoginConst.F_PASSWORD, "app.001", new Object[] { "password" });
 	}
 }

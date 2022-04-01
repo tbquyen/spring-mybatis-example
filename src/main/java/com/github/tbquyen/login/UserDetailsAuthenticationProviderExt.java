@@ -81,13 +81,25 @@ public class UserDetailsAuthenticationProviderExt extends AbstractUserDetailsAut
 		return loadedUser;
 	}
 
+	/**
+	 * Creates a successful {@link MyPrincipal} object.
+	 *
+	 * @param principal instanceof {@link UserDetailslmpl} load from database
+	 * @param authentication instanceof {@link MyPrincipal} with parameters when login
+	 * @param user instanceof {@link UserDetailslmpl} load from database
+	 *
+	 * @return the successful {@link MyPrincipal} token
+	 */
 	@Override
 	protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
 			UserDetails user) {
+		LOGGER.debug(principal);
+		LOGGER.debug(user instanceof UserDetailslmpl);
+		LOGGER.debug(authentication instanceof MyPrincipal);
 		LOGGER.debug("Login Success Authentication: " + user.getUsername());
 		Authentication token = super.createSuccessAuthentication(principal, authentication, user);
 
-		MyPrincipal result = new MyPrincipal(token.getPrincipal(), token.getCredentials(), token.getAuthorities());
+		MyPrincipal result = MyPrincipal.getInstance(token.getPrincipal(), token.getCredentials(), token.getAuthorities());
 		result.setDetails(authentication.getDetails());
 
 		return result;

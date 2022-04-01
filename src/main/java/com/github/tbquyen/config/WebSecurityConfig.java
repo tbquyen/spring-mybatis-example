@@ -42,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 	@Autowired
 	private LoginValidator loginValidator;
+	@Autowired
+	private AuthorizeUrlProperties urlConfig;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -98,9 +100,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		http.csrf().disable();
-		http.authorizeRequests()
-			.antMatchers("/changePassword").permitAll()
-			.anyRequest().authenticated();
+
+		for (AuthorizeUrl path : urlConfig.getPermitall()) {
+			http.authorizeRequests().antMatchers(path.getUrl()).permitAll();
+		}
+
+		for (AuthorizeUrl path : urlConfig.getAuthorizeurls()) {
+			http.authorizeRequests().antMatchers(path.getUrl()).hasAnyRole(path.getRoles());
+		}
+
+		http.authorizeRequests().anyRequest().authenticated();
 
 		http.formLogin()
 			.loginPage("/login")

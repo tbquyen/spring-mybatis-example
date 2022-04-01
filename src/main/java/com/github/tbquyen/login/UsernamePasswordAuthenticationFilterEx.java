@@ -46,10 +46,9 @@ public class UsernamePasswordAuthenticationFilterEx extends UsernamePasswordAuth
 			throw new LoginAuthenticationException("Validate Fail", errors, form);
 		}
 
-		MyPrincipal authRequest = new MyPrincipal(username, password);
 		// can setting multiple parameter
+		MyPrincipal authRequest = MyPrincipal.getInstance(username, password);
 
-		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
 
 		return this.getAuthenticationManager().authenticate(authRequest);

@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ErrorHandlerController {
 	private static final Logger LOGGER = LogManager.getLogger(ErrorHandlerController.class);
+	public static String JSP_ERROR = "app/error";
+
 	@Autowired
 	private MessageSource messageSource;
 
@@ -28,7 +30,7 @@ public class ErrorHandlerController {
 	public ModelAndView renderError403Page(ModelMap modelMap) {
 		modelMap.addAttribute("errorCode", 403);
 		modelMap.addAttribute("msg", messageSource.getMessage("error.403", null, Locale.getDefault()));
-		return new ModelAndView("error");
+		return new ModelAndView(JSP_ERROR);
 	}
 
 	@RequestMapping(value = "/404.html")
@@ -36,7 +38,7 @@ public class ErrorHandlerController {
 	public ModelAndView renderError404Page(ModelMap modelMap) {
 		modelMap.addAttribute("errorCode", 404);
 		modelMap.addAttribute("msg", messageSource.getMessage("error.404", null, Locale.getDefault()));
-		return new ModelAndView("error");
+		return new ModelAndView(JSP_ERROR);
 	}
 
 	@RequestMapping(value = "/405.html")
@@ -44,7 +46,7 @@ public class ErrorHandlerController {
 	public ModelAndView renderError405Page(ModelMap modelMap) {
 		modelMap.addAttribute("errorCode", 405);
 		modelMap.addAttribute("msg", messageSource.getMessage("error.503", null, Locale.getDefault()));
-		return new ModelAndView("error");
+		return new ModelAndView(JSP_ERROR);
 	}
 
 	@RequestMapping(value = "/503.html")
@@ -52,7 +54,7 @@ public class ErrorHandlerController {
 	public ModelAndView renderError503Page(ModelMap modelMap) {
 		modelMap.addAttribute("errorCode", 503);
 		modelMap.addAttribute("msg", messageSource.getMessage("error.503", null, Locale.getDefault()));
-		return new ModelAndView("error");
+		return new ModelAndView(JSP_ERROR);
 	}
 
 	@RequestMapping(value = "/500.html")
@@ -66,6 +68,6 @@ public class ErrorHandlerController {
 
 		modelMap.addAttribute("errorCode", 500);
 		modelMap.addAttribute("msg", messageSource.getMessage("error.500", null, Locale.getDefault()));
-		return new ModelAndView("error");
+		return new ModelAndView(JSP_ERROR);
 	}
 }

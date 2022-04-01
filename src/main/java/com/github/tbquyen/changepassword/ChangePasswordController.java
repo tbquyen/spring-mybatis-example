@@ -10,18 +10,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.github.tbquyen.login.LoginConst;
 import com.github.tbquyen.login.LoginForm;
 
 @Controller
+@RequestMapping(value = { ChangePasswordConst.URL })
 public class ChangePasswordController {
 	private static final String SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	@Autowired
@@ -34,20 +37,20 @@ public class ChangePasswordController {
 		binder.addValidators(validator);
 	}
 
-	@RequestMapping(value = { "/changePassword" }, method = RequestMethod.GET)
-	public ModelAndView changePasswordGET(@ModelAttribute("ChangePasswordForm") ChangePasswordForm form,
-			@RequestAttribute(name = "LoginForm", required = false) LoginForm formForward) {
+	@GetMapping
+	public ModelAndView changePasswordGET(@ModelAttribute(ChangePasswordConst.F_NAME) ChangePasswordForm form,
+			@RequestAttribute(name = LoginConst.F_NAME, required = false) LoginForm formForward) {
 		if (formForward != null)
 			BeanUtils.copyProperties(formForward, form);
-		return new ModelAndView("changePassword");
+		return new ModelAndView(ChangePasswordConst.VIEW);
 	}
 
-	@RequestMapping(value = { "/changePassword" }, method = RequestMethod.POST)
-	public ModelAndView changePasswordPOST(@ModelAttribute("ChangePasswordForm") @Validated ChangePasswordForm form, BindingResult result,
+	@PostMapping
+	public ModelAndView changePasswordPOST(@ModelAttribute(ChangePasswordConst.F_NAME) @Validated ChangePasswordForm form, BindingResult result,
 			HttpSession session, RedirectAttributes redirectAttributes) {
 
 		if(result.hasErrors()) {
-			ModelAndView mv = new ModelAndView("changePassword");
+			ModelAndView mv = new ModelAndView(ChangePasswordConst.VIEW);
 			mv.setStatus(HttpStatus.BAD_REQUEST);
 			return mv;
 		}
@@ -57,19 +60,19 @@ public class ChangePasswordController {
 
 		if(rcUpdate == 0) {
 			result.reject("login.001");
-			ModelAndView mv = new ModelAndView("changePassword");
+			ModelAndView mv = new ModelAndView(ChangePasswordConst.VIEW);
 			mv.setStatus(HttpStatus.BAD_REQUEST);
 			return mv;
 		}
 
 		LoginForm loginForm = new LoginForm();
 		BeanUtils.copyProperties(form, loginForm);
-		redirectAttributes.addFlashAttribute("LoginForm", loginForm);
+		redirectAttributes.addFlashAttribute(LoginConst.F_NAME, loginForm);
 
 		DefaultSavedRequest savedRequest = (DefaultSavedRequest) session.getAttribute(SAVED_REQUEST);
 		session.removeAttribute(SAVED_REQUEST);
 
-		String redirectPath = savedRequest == null ? "login" : savedRequest.getRequestURI();
+		String redirectPath = savedRequest == null ? LoginConst.VIEW : savedRequest.getRequestURI();
 		return new ModelAndView(new RedirectView(redirectPath));
 	}
 }

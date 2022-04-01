@@ -1,0 +1,7 @@
+permitall:
+  - url: /changePassword
+authorizeurls:
+  - url: /asdasd
+    roles: 1,2,3
+  - url: /ccc
+    roles: 1,2,3

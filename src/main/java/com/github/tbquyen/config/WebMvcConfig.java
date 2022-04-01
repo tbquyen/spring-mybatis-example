@@ -3,16 +3,21 @@
  */
 package com.github.tbquyen.config;
 
+import java.io.IOException;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 /**
  * @author QUYENTB
@@ -26,7 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setViewClass(JstlView.class);
-		resolver.setPrefix("/");
+		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
 		resolver.setExposeContextBeansAsAttributes(true);
 		return resolver;
@@ -42,5 +47,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		source.setBasename("messages");
 		source.setDefaultEncoding("utf-8");
 		return source;
+	}
+
+	@Bean(name = "authorizeUrlProperties")
+	public AuthorizeUrlProperties authorizeUrlProperties() throws IOException {
+		Yaml yaml = new Yaml(new Constructor(AuthorizeUrlProperties.class));
+		return yaml.load(new ClassPathResource("authorizeurls.yml").getInputStream());
 	}
 }

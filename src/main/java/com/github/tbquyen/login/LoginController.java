@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.github.tbquyen.config.MyPrincipal;
 
@@ -24,16 +23,15 @@ import com.github.tbquyen.config.MyPrincipal;
 public class LoginController {
 	private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
 
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
-	public ModelAndView login(ModelMap modelMap, @ModelAttribute("LoginForm") LoginForm form, BindingResult result,
+	@RequestMapping(value = { LoginConst.URL }, method = RequestMethod.GET)
+	public ModelAndView login(ModelMap modelMap, @ModelAttribute(LoginConst.F_NAME) LoginForm form, BindingResult result,
 			HttpSession session, RedirectAttributes redirectAttributes) {
-		ModelAndView mv = new ModelAndView("login");
+		ModelAndView mv = new ModelAndView(LoginConst.VIEW);
 		mv.setStatus(HttpStatus.UNAUTHORIZED);
 
 		if (MyPrincipal.getInstance().isAuthenticated()) {
 			LOGGER.debug("Is Login with acccount: " + MyPrincipal.getInstance().getName());
-			RedirectView rv = new RedirectView("");
-			return new ModelAndView(rv);
+			return new ModelAndView(LoginConst.VIEW_HOME);
 		}
 
 		Object authenticationException = session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
@@ -62,8 +60,8 @@ public class LoginController {
 		return mv;
 	}
 
-	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { LoginConst.URL_HOME }, method = RequestMethod.GET)
 	public String home() {
-		return "home";
+		return LoginConst.VIEW_HOME;
 	}
 }

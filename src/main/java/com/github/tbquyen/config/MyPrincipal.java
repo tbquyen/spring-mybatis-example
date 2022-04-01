@@ -13,11 +13,11 @@ public class MyPrincipal extends UsernamePasswordAuthenticationToken {
 
 	private static final long serialVersionUID = 1L;
 
-	public MyPrincipal(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+	protected MyPrincipal(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
 		super(principal, credentials, authorities);
 	}
 
-	public MyPrincipal(Object principal, Object credentials) {
+	protected MyPrincipal(Object principal, Object credentials) {
 		super(principal, credentials);
 	}
 
@@ -58,5 +58,13 @@ public class MyPrincipal extends UsernamePasswordAuthenticationToken {
 
 		// anonymousUser
 		return new MyPrincipal(authentication.getPrincipal(), authentication.getCredentials());
+	}
+
+	public static MyPrincipal getInstance(Object principal, Object credentials) {
+		return new MyPrincipal(principal, credentials);
+	}
+	
+	public static MyPrincipal getInstance(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+		return new MyPrincipal(principal, credentials, authorities);
 	}
 }

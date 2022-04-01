@@ -4,6 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -13,6 +14,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @MapperScan("com.github.tbquyen")
 public class MyBatisConfig {
+	@Autowired
+	private DatabaseProperties databaseConfig;
+
 	@Bean
 	public DataSourceTransactionManager mybatisTransactionManager() {
 		return new DataSourceTransactionManager(dataSource());
@@ -28,13 +32,13 @@ public class MyBatisConfig {
 	@Bean
 	public BasicDataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/spring-mybatis-example");
-		dataSource.setUsername("root");
-		dataSource.setPassword("123456");
-		dataSource.setMaxIdle(2);
-		dataSource.setTestWhileIdle(true);
-		dataSource.setValidationQuery("SELECT 1");
+		dataSource.setDriverClassName(databaseConfig.getDriverClassName());
+		dataSource.setUrl(databaseConfig.getUrl());
+		dataSource.setUsername(databaseConfig.getUsername());
+		dataSource.setPassword(databaseConfig.getPassword());
+		dataSource.setMaxIdle(databaseConfig.getMaxIdle());
+		dataSource.setTestWhileIdle(databaseConfig.getTestWhileIdle());
+		dataSource.setValidationQuery(databaseConfig.getValidationQuery());
 		return dataSource;
 	}
 }
