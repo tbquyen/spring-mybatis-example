@@ -1,7 +1,6 @@
 permitall:
   - url: /changePassword
+  - url: /
 authorizeurls:
-  - url: /asdasd
-    roles: 1,2,3
-  - url: /ccc
-    roles: 1,2,3
+  - url: /users
+    roles: ADMIN
